@@ -18,7 +18,7 @@ randctx ctx;
 ub4 rand_lim(ub4 limit);
 ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size);
 
-ub4 main()
+int main()
 {
 	ctx.randa=ctx.randb=ctx.randc=(ub4)0;
 	for (ub4 i=0; i<256; ++i) ctx.randrsl[i]=(ub4)0;
@@ -77,10 +77,11 @@ ub4 main()
 	else
 		printf("\nThe player chose NOT to switch.");
 	printf("\nCOUNT = %d (number of times the simulation was run)", COUNT);
-	printf("\nNUM_SUCCESS = %u", num_success);
-	printf("\nNUM_FAILURE = %u", num_failure);
+	printf("\nNUM_SUCCESS = %lu", num_success);
+	printf("\nNUM_FAILURE = %lu", num_failure);
 	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/((double)num_failure));
 	printf("\nPercent incorrect guesses (GOT THE GOAT): %f", ((double)num_success)/((double)num_failure));
+	return 0;
 }
 
 /**
