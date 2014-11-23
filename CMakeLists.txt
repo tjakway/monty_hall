@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9)
 
-add_definitions("-g -m32 -std=c99")
+add_definitions("-m32 -std=c99")
 
 project(monty_hall C)
 

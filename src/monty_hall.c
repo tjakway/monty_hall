@@ -16,7 +16,7 @@
 typedef unsigned long int ub4;
 
 /*number of times to run the simulation*/
-#define COUNT 10000000
+#define COUNT 2000000
 
 #define SWITCH TRUE //do we switch doors or not?
 
@@ -88,8 +88,8 @@ int main()
 	printf("\nCOUNT = %d (number of times the simulation was run)", COUNT);
 	printf("\nNUM_SUCCESS = %lu", num_success);
 	printf("\nNUM_FAILURE = %lu", num_failure);
-	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/((double)num_failure));
-	printf("\nPercent incorrect guesses (GOT THE GOAT): %f\n", ((double)num_success)/((double)num_failure));
+	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/COUNT);
+	printf("\nPercent incorrect guesses (GOT THE GOAT): %f\n", ((double)num_failure)/COUNT);
 	return 0;
 }
 
