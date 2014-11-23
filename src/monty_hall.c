@@ -7,9 +7,16 @@
 #include <assert.h>
 #include <stdint.h>
 #include "rand.h"
+//#include <time.h>
+//#include <stdlib.h>
+//#include <stdbool.h>
+
+//#define TRUE 1
+//#define FALSE 0
+typedef unsigned long int ub4;
 
 /*number of times to run the simulation*/
-#define COUNT 100
+#define COUNT 10000000
 
 #define SWITCH TRUE //do we switch doors or not?
 
@@ -25,6 +32,8 @@ int main()
 	
 	randinit(&ctx, FALSE); // randinit calls isaac at the end
 	isaac(&ctx);
+	//srand(time(NULL));
+	
 	
 	/*num_success = # of correct guesses (got the car)
 	 * num_failure = # of incorrect guesses (got the goat)*/
@@ -33,7 +42,7 @@ int main()
 	for(ub4 i = 0; i < COUNT; i++)
 	{
 		//TRUE = has the car, FALSE = has the goat
-		isaac(&ctx);
+		
 		ub4 doors[] = {0, 0, 0};
 		
 		ub4 car_index = rand_lim(2); //pick a random door to put the car behind
@@ -80,7 +89,7 @@ int main()
 	printf("\nNUM_SUCCESS = %lu", num_success);
 	printf("\nNUM_FAILURE = %lu", num_failure);
 	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/((double)num_failure));
-	printf("\nPercent incorrect guesses (GOT THE GOAT): %f", ((double)num_success)/((double)num_failure));
+	printf("\nPercent incorrect guesses (GOT THE GOAT): %f\n", ((double)num_success)/((double)num_failure));
 	return 0;
 }
 
@@ -89,6 +98,7 @@ int main()
  */
 ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 {
+	
 	ub4 pick = 10000;
 	while(TRUE)
 	{
@@ -102,6 +112,7 @@ ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 			if(pick == not[i])
 				continue;
 		}
+		return pick;
 	}
 	
 	//pick is an array index and rand_lim should return between 0 and limit inclusive
@@ -115,8 +126,6 @@ ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 ub4 rand_lim(ub4 limit) {
 /* return a random number between 0 and limit inclusive.
  */
-	
-	isaac(&ctx); // and here it's called a second time before reading from randrsl!
 	/*UB4MAXVAL= RAND_MAX*/
 	double divisor = UB4MAXVAL/(limit+1);
 	ub4 retval;
