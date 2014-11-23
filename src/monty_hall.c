@@ -3,19 +3,18 @@
  * RNG
  * Thomas Jakway, 11/23/14
  */
-#include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdint.h>
 #include "isaac64.h"
-
 
 /*number of times to run the simulation*/
 #define COUNT 100
 
 #define SWITCH TRUE //do we switch doors or not?
 
-int rand_lim(int limit);
-int get_rand_not(int limit, int not[], int not_size);
+ub8 rand_lim(unsigned int limit);
+int get_rand_not(unsigned int limit, unsigned int not[], unsigned int not_size);
 
 int main()
 {
@@ -30,7 +29,7 @@ int main()
 	{
 		//TRUE = has the car, FALSE = has the goat
 		isaac64();
-		int doors[] = {0, 0, 0};
+		unsigned int doors[] = {0, 0, 0};
 		
 		unsigned int car_index = rand_lim(2); //pick a random door to put the car behind
 		doors[car_index] = TRUE; 
@@ -38,21 +37,21 @@ int main()
 		//get a 2nd random number that is not the car--this is the player's pick
 		//get a random number between 0 and 2 (since the problem presents 3 doors)
 		unsigned int not_size = 1;
-		int not[] = { car_index };
+		unsigned int not[] = { car_index };
 		int players_pick = get_rand_not(2, not, not_size); 
 		assert(players_pick > -1);
 		
 		//get a random integer that is not the player's choice and is not the car
 		unsigned int not_reveal_size = 2;
-		int not_reveal[] = { car_index, players_pick };
+		unsigned int not_reveal[] = { car_index, players_pick };
 		int montys_pick = get_rand_not(2, not_reveal, not_reveal_size);
 		
 		//monty revealed the door--do you switch?
 		if(SWITCH)
 		{
 			//switching means you pick whatever monty didn't pick
-			int new_pick_not_size = 1;
-			int new_pick_not[] = { montys_pick };
+			unsigned int new_pick_not_size = 1;
+			unsigned int new_pick_not[] = { montys_pick };
 			players_pick = get_rand_not(2, new_pick_not, new_pick_not_size);
 		}
 		
@@ -82,7 +81,7 @@ int main()
 /**
  * get a random number between 0 and limit inclusive that is not any of the values in not
  */
-int get_rand_not(int limit, int not[], int not_size)
+int get_rand_not(unsigned int limit, unsigned int not[], unsigned int not_size)
 {
 	int pick = -1;
 	while(TRUE)
@@ -109,11 +108,11 @@ int get_rand_not(int limit, int not[], int not_size)
  * see http://stackoverflow.com/questions/2999075/generate-a-random-number-within-range
  * generate random number without skew
  */
-int rand_lim(int limit) {
+ub8 rand_lim(unsigned int limit) {
 /* return a random number between 0 and limit inclusive.
  */
-
-    int divisor = RAND_MAX/(limit+1);
+	/*UB8MAXVAL= RAND_MAX*/
+    int divisor = UB8MAXVAL/(limit+1);
     int retval;
 
     do { 
