@@ -3,16 +3,19 @@
  * RNG
  * Thomas Jakway, 11/23/14
  */
-#include "isaac64.h"
+#include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+#include "isaac64.h"
+
 
 /*number of times to run the simulation*/
-#define COUNT 100000
+#define COUNT 100
 
 #define SWITCH TRUE //do we switch doors or not?
 
 int rand_lim(int limit);
-int get_rand_not(int limit, int[] not, int not_size);
+int get_rand_not(int limit, int not[], int not_size);
 
 int main()
 {
@@ -37,8 +40,7 @@ int main()
 		unsigned int not_size = 1;
 		int not[] = { car_index };
 		int players_pick = get_rand_not(2, not, not_size); 
-		
-		assert(pick > -1);
+		assert(players_pick > -1);
 		
 		//get a random integer that is not the player's choice and is not the car
 		unsigned int not_reveal_size = 2;
@@ -70,20 +72,20 @@ int main()
 		printf("\nThe player chose TO switch.");
 	else
 		printf("\nThe player chose NOT to switch.");
-	printf("\nCOUNT = %d (number of times the simulation was run)");
-	printf("\nNUM_SUCCESS = %u");
-	printf("\nNUM_FAILURE = %u");
-	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/((double)num_failure)));
+	printf("\nCOUNT = %d (number of times the simulation was run)", COUNT);
+	printf("\nNUM_SUCCESS = %u", num_success);
+	printf("\nNUM_FAILURE = %u", num_failure);
+	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/((double)num_failure));
 	printf("\nPercent incorrect guesses (GOT THE GOAT): %f", ((double)num_success)/((double)num_failure));
 }
 
 /**
  * get a random number between 0 and limit inclusive that is not any of the values in not
  */
-int get_rand_not(int limit, int[] not, int not_size)
+int get_rand_not(int limit, int not[], int not_size)
 {
 	int pick = -1;
-	while(true)
+	while(TRUE)
 	{
 		pick = rand_lim(limit);
 		
