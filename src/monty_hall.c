@@ -20,10 +20,15 @@ typedef unsigned long int ub4;
 
 #define SWITCH TRUE //do we switch doors or not?
 
+#define NUM_DOORS 3
+#define DOORS_LIMIT 2
+
 randctx ctx;
 
+ub4 get_host_door(ub4 doors[], ub4 player_choice);
 ub4 rand_lim(ub4 limit);
 ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size);
+ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 seconddoor);
 
 int main()
 {
@@ -48,26 +53,19 @@ int main()
 		ub4 car_index = rand_lim(2); //pick a random door to put the car behind
 		doors[car_index] = TRUE; 
 		
-		//get a 2nd random number that is not the car--this is the player's pick
-		//get a random number between 0 and 2 (since the problem presents 3 doors)
-		ub4 not_size = 1;
-		ub4 not[] = { car_index };
-		ub4 players_pick = get_rand_not(2, not, not_size); 
-		assert(players_pick < 3);
+		//the player picks a random door
+		ub4 players_pick = rand_lim(DOORS_LIMIT);
 		
-		//get a random ub4eger that is not the player's choice and is not the car
-		ub4 not_reveal_size = 2;
-		ub4 not_reveal[] = { car_index, players_pick };
-		ub4 montys_pick = get_rand_not(2, not_reveal, not_reveal_size);
+		//get the host's pick
+		//it will be a door that isn't yours that reveals a goat
+		ub4 host_pick = get_host_door(doors, players_pick);
 		
-		//monty revealed the door--do you switch?
+		//do you switch to the one that isn't yours and the host hasn't revealed?
 		if(SWITCH)
 		{
-			//switching means you pick whatever monty didn't pick
-			ub4 new_pick_not_size = 1;
-			ub4 new_pick_not[] = { montys_pick };
-			players_pick = get_rand_not(2, new_pick_not, new_pick_not_size);
+			players_pick = get_other_door(doors, players_pick, host_pick);
 		}
+		
 		
 		//did the player win?
 		if(players_pick == car_index)
@@ -93,6 +91,22 @@ int main()
 	return 0;
 }
 
+ub4 get_host_door(ub4 doors[], ub4 player_choice)
+{
+	//generate a completely random door and assert it meets these conditions
+	ub4 host_pick = rand_lim(DOORS_LIMIT); //DOORS_LIMIT == 2 because C counts up from 0
+	//recurse & try again if the generated number is the player choice or the car
+	//the host must open a door that isn't the player's and has a goat
+	if((host_pick == player_choice) || (doors[host_pick] == TRUE))
+	{
+		return get_host_door(doors, player_choice);
+	}
+	else
+	{
+		return host_pick;
+	}
+}
+
 /**
  * get a random number between 0 and limit inclusive that is not any of the values in not
  */
@@ -108,6 +122,23 @@ ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 	}
 	assert(pick < limit);
 	return pick;
+}
+
+ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
+{	
+	for(ub4 i = 0; i < DOORS_LIMIT; i++)
+	{
+		//assert(firstdoor > -1); assert(firstdoor < 3);
+		//assert(secondoor > -1); assert(secondoor < 3);
+		//test i not doors[i] because firstdoor and seconddoor are indices
+		if(i != firstdoor && i != secondoor)
+		{
+			return i;
+		}
+	}
+	//error--return an absurd value
+	perror("ERROR in get_other_door: no 3rd door!");
+	return UB4MAXVAL;
 }
 
 /**
