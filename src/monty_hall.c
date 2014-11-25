@@ -1,12 +1,46 @@
 /**
- * Monty Hall problem simulator using the public domain ISAAC crypto
- * RNG
- * Thomas Jakway, 11/23/14
+ * Copyright 2014 Thomas Jakway
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+/**
+ * Monty Hall problem simulator using the public domain ISAAC crypto RNG
+ */
+ 
+
+/**
+ * ************INCLUDES************
  */
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
 #include "rand.h"
+
+/**
+ * ************GLOBALS************
+ */
+struct{
+	//number of times to run the simulation
+	unsigned int count;
+};
+
+//used by ISAAC
+randctx ctx;
+
+/**
+ * ************DEFINES************
+ */
 
 /*number of times to run the simulation*/
 #define COUNT 2000000
@@ -14,15 +48,21 @@
 #define SWITCH TRUE //do we switch doors or not?
 
 #define NUM_DOORS 3U
-#define DOORS_LIMIT 2U
 
-randctx ctx;
 
+/**
+ * ************PROTOTYPES************
+ */
 ub4 get_host_door(ub4 doors[], ub4 player_choice);
 ub4 rand_lim(ub4 limit);
 ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size);
 ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 seconddoor);
 
+
+/**
+ * ************FUNCTIONS************
+ */
+ 
 int main()
 {
 	ctx.randa=ctx.randb=ctx.randc=(ub4)0;
@@ -47,7 +87,7 @@ int main()
 		doors[car_index] = TRUE; 
 		
 		//the player picks a random door
-		ub4 players_pick = rand_lim(DOORS_LIMIT);
+		ub4 players_pick = rand_lim(NUM_DOORS-1); //NUM_DOORS - 1 because C counts up from 0
 		
 		//get the host's pick
 		//it will be a door that isn't yours that reveals a goat
@@ -87,7 +127,7 @@ int main()
 ub4 get_host_door(ub4 doors[], ub4 player_choice)
 {
 	//generate a completely random door and assert it meets these conditions
-	ub4 host_pick = rand_lim(DOORS_LIMIT); //DOORS_LIMIT == 2 because C counts up from 0
+	ub4 host_pick = rand_lim(NUM_DOORS); //DOORS_LIMIT == 2 because C counts up from 0
 	//recurse & try again if the generated number is the player choice or the car
 	//the host must open a door that isn't the player's and has a goat
 	if((host_pick == player_choice) || (doors[host_pick] == TRUE))
@@ -123,7 +163,7 @@ ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
 	assert(secondoor <= DOORS_LIMIT);
 	assert(doors[0] != doors[1] != doors[2]);
 
-	//loop over NUM_DOORS == 3, it's the not inclusive version of DOORS_LIMIT
+	//loop over NUM_DOORS (which is 3) NOT (NUM_DOORS-1) or else we cut off the last run of the for loop!
 	ub4 i;
 	for(i = 0; i < NUM_DOORS; i++)
 	{
@@ -141,18 +181,18 @@ ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
 }
 
 /**
+ * return a random number between 0 and limit inclusive.
  * see http://stackoverflow.com/questions/2999075/generate-a-random-number-within-range
- * generate random number without skew
+ * generates a random number without skew
  */
-ub4 rand_lim(ub4 limit) {
-/* return a random number between 0 and limit inclusive.
- */
-	/*UB4MAXVAL= RAND_MAX*/
+ub4 rand_lim(ub4 limit) 
+{
+	//UB4MAXVAL= RAND_MAX
 	double divisor = UB4MAXVAL/(limit+1);
 	ub4 retval;
 	
 	do {
-		retval = rand(&ctx) / divisor; //ISAAC redefines rand so this is OK
+		retval = rand(&ctx) / divisor; //ISAAC redefines rand
 	} while (retval > limit);
 
 	return retval;
