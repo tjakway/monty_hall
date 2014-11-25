@@ -13,15 +13,15 @@
 
 //#define TRUE 1
 //#define FALSE 0
-typedef unsigned long int ub4;
+//typedef unsigned long int ub4;
 
 /*number of times to run the simulation*/
 #define COUNT 2000000
 
 #define SWITCH TRUE //do we switch doors or not?
 
-#define NUM_DOORS 3
-#define DOORS_LIMIT 2
+#define NUM_DOORS 3U
+#define DOORS_LIMIT 2U
 
 randctx ctx;
 
@@ -125,20 +125,26 @@ ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 }
 
 ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
-{	
-	for(ub4 i = 0; i < DOORS_LIMIT; i++)
+{
+	assert(firstdoor <= DOORS_LIMIT);
+	assert(secondoor <= DOORS_LIMIT);
+	assert(doors[0] != doors[1] != doors[2]);
+
+	//loop over NUM_DOORS == 3, it's the not inclusive version of DOORS_LIMIT
+	ub4 i;
+	for(i = 0; i < NUM_DOORS; i++)
 	{
 		//assert(firstdoor > -1); assert(firstdoor < 3);
 		//assert(secondoor > -1); assert(secondoor < 3);
 		//test i not doors[i] because firstdoor and seconddoor are indices
-		if(i != firstdoor && i != secondoor)
+		if((i != firstdoor) && (i != secondoor))
 		{
 			return i;
 		}
 	}
 	//error--return an absurd value
 	perror("ERROR in get_other_door: no 3rd door!");
-	return UB4MAXVAL;
+	return 500;
 }
 
 /**
