@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9)
 
-add_definitions("-m32 -g -std=c99")
+add_definitions("-m32 -g -std=c99 -Wextra -Wstrict-prototypes -Wundef -Wcast-qual -Wconversion -Wformat=2 -Wshadow -ftrapv -Wuninitialized -Winit-self -Wcast-align -Wwrite-strings")
 
 project(monty_hall C)
 
