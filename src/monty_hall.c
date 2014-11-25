@@ -7,13 +7,6 @@
 #include <assert.h>
 #include <stdint.h>
 #include "rand.h"
-//#include <time.h>
-//#include <stdlib.h>
-//#include <stdbool.h>
-
-//#define TRUE 1
-//#define FALSE 0
-//typedef unsigned long int ub4;
 
 /*number of times to run the simulation*/
 #define COUNT 2000000
