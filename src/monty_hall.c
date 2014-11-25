@@ -98,25 +98,16 @@ int main()
  */
 ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 {
+	ub4 pick = rand_lim(limit);
 	
-	ub4 pick = 10000;
-	while(TRUE)
+	for(ub4 i = 0; i < not_size; i++)
 	{
-		pick = rand_lim(limit);
-		
-		//this is an inversion of the usual pattern
-		//instead of checking for membership in an array, check for not membership in an array
-		//if any value matches pick, this pick value is bad--run the loop again
-		for(ub4 i = 0; i < not_size; i++)
-		{
-			if(pick == not[i])
-				continue;
-		}
-		return pick;
+		//if this set isn't good, recurse until we get a matching one
+		if(pick == not[i])
+			return get_rand_not(limit, not, not_size);
 	}
-	
-	//pick is an array index and rand_lim should return between 0 and limit inclusive
-	assert(pick < 3);
+	assert(pick < limit);
+	return pick;
 }
 
 /**
