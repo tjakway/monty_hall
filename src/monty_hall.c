@@ -52,8 +52,6 @@ randctx ctx;
 #define HELP_STR "Pass --count <number> to run the simulation <number>"\
 			   "first with the player switching choices, then without.";
 
-#define SWITCH TRUE //do we switch doors or not?
-
 #define NUM_DOORS 3U
 
 
@@ -119,7 +117,7 @@ void run_simulation(unsigned int count, bool switch_doors)
 	{
 		//TRUE = has the car, FALSE = has the goat
 		
-		unsigned int doors[] = {0, 0, 0};
+		unsigned int doors[NUM_DOORS] = {0, 0, 0};
 		
 		unsigned int car_index = rand_lim(2); //pick a random door to put the car behind
 		doors[car_index] = TRUE; 
@@ -132,11 +130,10 @@ void run_simulation(unsigned int count, bool switch_doors)
 		unsigned int host_pick = get_host_door(doors, players_pick);
 		
 		//do you switch to the one that isn't yours and the host hasn't revealed?
-		if(SWITCH)
+		if(switch_door)
 		{
 			players_pick = get_other_door(doors, players_pick, host_pick);
 		}
-		
 		
 		//did the player win?
 		if(players_pick == car_index)
@@ -149,7 +146,7 @@ void run_simulation(unsigned int count, bool switch_doors)
 		}
 	}
 	
-	if(SWITCH)
+	if(switch_door)
 		printf("\nThe player chose TO switch.");
 	else
 		printf("\nThe player chose NOT to switch.");
