@@ -1,5 +1,0 @@
-move ISAAC files into include/isaac and src/isaac as appropriate
-
-implement getopt
-
-refactor sim code from main -> separate function

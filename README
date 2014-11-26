@@ -16,6 +16,6 @@ BUILDING:
 
 mkdir bin
 cd bin
-cmake -GUnix\ Makefiles -DCMAKE_BUILD_TYPE=Release ..
+cmake -GUnix\ Makefiles -DCMAKE_BUILD_TYPE=RELEASE ..
 make
 ./monty_hall_simulator
