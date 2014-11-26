@@ -2,7 +2,7 @@ Simulates the Monty Hall Paradox.  From wikipedia (http://en.wikipedia.org/wiki/
 
 Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice? (Whitaker, 1990, as quoted by vos Savant 1990a)
 
-The paradox is that, intuitively, switch doors should not matter and you should win a car regardless of what you do.  In reality, not switching gives you the correct answer only 33% of the time and switching makes you win 66% of the time.
+The paradox is that, intuitively, switch doors should not matter and you should have the same chance of winning a car regardless of what you do.  In reality, not switching gives you the correct answer only 33% of the time and switching makes you win 66% of the time.
 
 Uses ISAAC (public domain) for random number generation.  See http://burtleburtle.net/bob/rand/isaacafa.html.
 
