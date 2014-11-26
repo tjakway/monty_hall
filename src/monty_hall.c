@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <getopt.h> //for getopt_long
 #include <stdbool.h>
 #include "rand.h" //for ISAAC
@@ -40,7 +41,7 @@ static struct option long_options[] = {
 
 struct{
 	//number of times to run the simulation
-	unsigned int count;
+	unsigned long int count;
 } opt;
 
 //used by ISAAC
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
 		switch(c)
 		{
 		case 'c':
-			opt.count = optarg;
+			opt.count = strtoul(optarg, NULL, 10);
 			break;
 		case '?':
 			printf(HELP_STR);
@@ -115,9 +116,9 @@ void run_simulation(unsigned int count, bool switch_doors)
 {
 	/*num_success = # of correct guesses (got the car)
 	 * num_failure = # of incorrect guesses (got the goat)*/
-	unsigned int num_success=0, num_failure=0;
+	unsigned long num_success=0, num_failure=0;
 	
-	for(unsigned int i = 0; i < COUNT; i++)
+	for(unsigned int i = 0; i < count; i++)
 	{
 		//TRUE = has the car, FALSE = has the goat
 		
@@ -134,7 +135,7 @@ void run_simulation(unsigned int count, bool switch_doors)
 		unsigned int host_pick = get_host_door(doors, players_pick);
 		
 		//do you switch to the one that isn't yours and the host hasn't revealed?
-		if(switch_door)
+		if(switch_doors)
 		{
 			players_pick = get_other_door(doors, players_pick, host_pick);
 		}
@@ -150,16 +151,15 @@ void run_simulation(unsigned int count, bool switch_doors)
 		}
 	}
 	
-	if(switch_door)
+	if(switch_doors)
 		printf("\nThe player chose TO switch.");
 	else
 		printf("\nThe player chose NOT to switch.");
-	printf("\nCOUNT = %d (number of times the simulation was run)", COUNT);
+	printf("\nCOUNT = %d (number of times the simulation was run)", count);
 	printf("\nNUM_SUCCESS = %lu", num_success);
 	printf("\nNUM_FAILURE = %lu", num_failure);
-	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/COUNT);
-	printf("\nPercent incorrect guesses (GOT THE GOAT): %f\n", ((double)num_failure)/COUNT);
-	return 0;
+	printf("\nPercent correct guesses (GOT THE CAR): %f", ((double)num_success)/count);
+	printf("\nPercent incorrect guesses (GOT THE GOAT): %f\n", ((double)num_failure)/count);
 }
 
 unsigned int get_host_door(unsigned int doors[], unsigned int player_choice)
@@ -203,6 +203,8 @@ unsigned int get_other_door(unsigned int doors[],
 {
 	assert(firstdoor <= DOORS_LIMIT);
 	assert(seconddoor <= DOORS_LIMIT);
+	//the parameter doors is only used in debug builds for static
+	//assertion
 	assert(doors[0] != doors[1] != doors[2]);
 
 	//loop over NUM_DOORS (which is 3) NOT (NUM_DOORS-1) or else we cut off the last run of the for loop!
