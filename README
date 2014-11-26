@@ -3,3 +3,7 @@ There are 2 ways to simulate this problem:
 2. generate purely random numbers and then check at the end if the assumptions are valid.  If not, skip that instance of the simulation and run it again
 
 Uses ISAAC for random number generation.  See http://burtleburtle.net/bob/rand/isaacafa.html.
+
+BUILDING:
+
+only builds for x86 (32 bit) because ISAAC only typedefs its values--it's not really platform independent.  Get ISAAC64 and change the ISAAC calls to the appropriate ISAAC64 to build for x86-64.
