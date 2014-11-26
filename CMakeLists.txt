@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 2.8)
 
 add_definitions("-m32 -std=c99 -Wall")
 
 IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 	#add extra warnings
 	add_definitions(-g -Wextra -Wstrict-prototypes -Wundef -Wcast-qual -Wconversion -Wformat=2 -Wshadow -ftrapv -Wuninitialized -Winit-self -Wcast-align -Wwrite-strings)
-    ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
+ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 
 project(monty_hall C)
 
