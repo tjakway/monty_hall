@@ -182,8 +182,8 @@ void run_simulation(unsigned int count, bool switch_doors)
 unsigned int get_host_door(unsigned int doors[], unsigned int player_choice)
 {
 	//generate a completely random door and assert it meets these conditions
-	unsigned int host_pick = rand_lim(NUM_DOORS); //DOORS_LIMIT == 2 because C counts up from 0
-	//recurse & try again if the generated number is the player choice or the car
+	unsigned int host_pick = rand_lim(NUM_DOORS);
+
 	//the host must open a door that isn't the player's and has a goat
 	if((host_pick == player_choice) || (doors[host_pick] == TRUE))
 	{
@@ -218,8 +218,8 @@ unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int n
 unsigned int get_other_door(unsigned int doors[], 
 						unsigned int firstdoor, unsigned int seconddoor)
 {
-	assert(firstdoor <= DOORS_LIMIT);
-	assert(seconddoor <= DOORS_LIMIT);
+	assert(firstdoor <= (NUM_DOORS-1));
+	assert(seconddoor <= (NUM_DOORS-1));
 	//the parameter doors is only used in debug builds for static
 	//assertion
 	assert(doors[0] != doors[1] != doors[2]);
@@ -228,7 +228,7 @@ unsigned int get_other_door(unsigned int doors[],
 	for(unsigned int i = 0; i < NUM_DOORS; i++)
 	{
 		assert(firstdoor > -1); assert(firstdoor < 3);
-		assert(secondoor > -1); assert(secondoor < 3);
+		assert(seconddoor > -1); assert(seconddoor < 3);
 		//test i not doors[i] because firstdoor and seconddoor are indices
 		if((i != firstdoor) && (i != seconddoor))
 		{
