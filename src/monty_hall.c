@@ -30,10 +30,14 @@
 /**
  * ************GLOBALS************
  */
+static struct option long_options[] = {
+	{"count",	required_argument, 0, 'c' }
+};
+
 struct{
 	//number of times to run the simulation
 	unsigned int count;
-};
+} opt;
 
 //used by ISAAC
 randctx ctx;
@@ -43,7 +47,10 @@ randctx ctx;
  */
 
 /*number of times to run the simulation*/
-#define COUNT 2000000
+#define DEFAULT_COUNT 2000000
+
+#define HELP_STR "Pass --count <number> to run the simulation <number>"\
+			   "first with the player switching choices, then without.";
 
 #define SWITCH TRUE //do we switch doors or not?
 
@@ -62,15 +69,37 @@ ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 seconddoor);
 /**
  * ************FUNCTIONS************
  */
- 
-int main()
+
+int main(int argc, char **argv)
 {
+	//set defaults--will be overwritten by getopt if there are any args
+	opt.count = DEFAULT_COUNT;
+	
+	int long_index = 0;
+	int c;
+	while((c = getopt_long(argc, argv, "c:"), long_options, &long_index) != -1)
+	{
+		switch(c)
+		{
+		case 'c':
+			opt.count = optarg;
+			break;
+		case '?':
+			printf(HELP_STR);
+			exit(1);
+		default:
+			printf(HELP_STR);
+			exit(1);
+		}
+	}
+	
+	
+	//initialize ISAAC
 	ctx.randa=ctx.randb=ctx.randc=(ub4)0;
 	for (ub4 i=0; i<256; ++i) ctx.randrsl[i]=(ub4)0;
-	
 	randinit(&ctx, FALSE); // randinit calls isaac at the end
-	isaac(&ctx);
-	//srand(time(NULL));
+	isaac(&ctx); //run again just in case--
+				 //the authors do this in their paper
 	
 	
 	/*num_success = # of correct guesses (got the car)
