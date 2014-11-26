@@ -55,7 +55,7 @@ randctx ctx;
 #define DEFAULT_COUNT 2000000
 
 #define COUNT_STR "Pass --count <number> to run the simulation <number> of times, "\
-			   "first with the player switching choices, then without.\n"
+			   "first with the player switching doors, then without.\n"
 
 #define HELP_STR COUNT_STR\
 			   "The paradox, quotingfrom http://en.wikipedia.org/wiki/Monty_Hall_problem#The_paradox:\n"\
