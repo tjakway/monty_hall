@@ -27,7 +27,9 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
-#include "rand.h"
+#include <getopt.h> //for getopt_long
+#include <stdbool.h>
+#include "rand.h" //for ISAAC
 
 /**
  * ************GLOBALS************
@@ -52,7 +54,7 @@ randctx ctx;
 #define DEFAULT_COUNT 2000000
 
 #define HELP_STR "Pass --count <number> to run the simulation <number>"\
-			   "first with the player switching choices, then without.";
+			   "first with the player switching choices, then without."
 
 #define NUM_DOORS 3U
 
@@ -77,7 +79,7 @@ int main(int argc, char **argv)
 	
 	int long_index = 0;
 	int c;
-	while((c = getopt_long(argc, argv, "c:"), long_options, &long_index) != -1)
+	while((c = getopt_long(argc, argv, "c:", long_options, &long_index)) != -1)
 	{
 		switch(c)
 		{
