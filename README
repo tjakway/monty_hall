@@ -19,3 +19,23 @@ cd bin
 cmake -GUnix\ Makefiles -DCMAKE_BUILD_TYPE=Release ..
 make
 ./monty_hall_simulator
+
+EXAMPLE OUTPUT:
+
+Running the simulator the default number of times (2000000).  Pass --count <number> to run the simulation <number> of times, first with the player switching doors, then without.
+
+**********MONTY HALL SIMULATION RESULTS**********
+The player chose TO switch.
+COUNT = 2000000 (number of times the simulation was run)
+NUM_SUCCESS = 999849
+NUM_FAILURE = 1000151
+Percent correct guesses (GOT THE CAR): 0.499924
+Percent incorrect guesses (GOT THE GOAT): 0.500076
+
+*************************************************
+The player chose NOT to switch.
+COUNT = 2000000 (number of times the simulation was run)
+NUM_SUCCESS = 667048
+NUM_FAILURE = 1332952
+Percent correct guesses (GOT THE CAR): 0.333524
+Percent incorrect guesses (GOT THE GOAT): 0.666476
