@@ -1,3 +1,4 @@
 bin
 *.kdev4
 *~
+*.swp
