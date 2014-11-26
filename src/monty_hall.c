@@ -23,7 +23,6 @@
  * ************INCLUDES************
  */
  
-#define NDEBUG //uncomment to enable assertions
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
@@ -56,7 +55,16 @@ randctx ctx;
 #define DEFAULT_COUNT 2000000
 
 #define HELP_STR "Pass --count <number> to run the simulation <number>"\
-			   "first with the player switching choices, then without.\n"
+			   "first with the player switching choices, then without.\n"\
+			   "The paradox, quotingfrom http://en.wikipedia.org/wiki/Monty_Hall_problem#The_paradox:\n"\
+			   "Suppose you're on a game show, and you're given the choice"\
+			   " of three doors:"\
+			   " Behind one door is a car; behind the others, goats."\
+			   " You pick a door, say No. 1, and the host, who knows "\
+			   "what's behind the doors, opens another door, say No. 3, "\
+			   "which has a goat. He then says to you, \"Do you want to "\
+			   "pick door No. 2?\" Is it to your advantage to switch"\
+			   " your choice? (Whitaker, 1990, as quoted by vos Savant 1990a)"
 
 #define NUM_DOORS 3U
 
