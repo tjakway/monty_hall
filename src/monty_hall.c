@@ -182,7 +182,7 @@ void run_simulation(unsigned int count, bool switch_doors)
 unsigned int get_host_door(unsigned int doors[], unsigned int player_choice)
 {
 	//generate a completely random door and assert it meets these conditions
-	unsigned int host_pick = rand_lim(NUM_DOORS);
+	unsigned int host_pick = rand_lim(NUM_DOORS-1);
 
 	//the host must open a door that isn't the player's and has a goat
 	if((host_pick == player_choice) || (doors[host_pick] == TRUE))
@@ -218,8 +218,8 @@ unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int n
 unsigned int get_other_door(unsigned int doors[], 
 						unsigned int firstdoor, unsigned int seconddoor)
 {
-	assert(firstdoor < NUM_DOORS);
-	assert(seconddoor < NUM_DOORS);
+	//assert(firstdoor < NUM_DOORS);
+	//assert(seconddoor < NUM_DOORS);
 	//the parameter doors is only used in debug builds for static
 	//assertion
 	assert(doors[0] != doors[1] != doors[2]);
@@ -227,8 +227,8 @@ unsigned int get_other_door(unsigned int doors[],
 	//loop over NUM_DOORS (which is 3) NOT (NUM_DOORS-1) or else we cut off the last run of the for loop!
 	for(unsigned int i = 0; i < NUM_DOORS; i++)
 	{
-		assert(firstdoor > -1); assert(firstdoor < 3);
-		assert(seconddoor > -1); assert(seconddoor < 3);
+		//assert(firstdoor > -1); assert(firstdoor < 3);
+		//assert(seconddoor > -1); assert(seconddoor < 3);
 		//test i not doors[i] because firstdoor and seconddoor are indices
 		if((i != firstdoor) && (i != seconddoor))
 		{
