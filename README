@@ -1,9 +1,21 @@
-There are 2 ways to simulate this problem:
-1. generate only random numbers that conform to the assumptions of the problem
-2. generate purely random numbers and then check at the end if the assumptions are valid.  If not, skip that instance of the simulation and run it again
+Simulates the Monty Hall Paradox.  From wikipedia (http://en.wikipedia.org/wiki/Monty_Hall_problem#The_paradox):
 
-Uses ISAAC for random number generation.  See http://burtleburtle.net/bob/rand/isaacafa.html.
+Suppose you're on a game show, and you're given the choice of three doors: Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice? (Whitaker, 1990, as quoted by vos Savant 1990a)
+
+The paradox is that, intuitively, switch doors should not matter and you should win a car regardless of what you do.  In reality, not switching gives you the correct answer only 33% of the time and switching makes you win 66% of the time.
+
+Uses ISAAC (public domain) for random number generation.  See http://burtleburtle.net/bob/rand/isaacafa.html.
+
+DEPENDENCIES:
+cmake >2.8 to build
+(ISAAC is in included as source files in include/ and src/, no installation necessary)
 
 BUILDING:
 
-only builds for x86 (32 bit) because ISAAC only typedefs its values--it's not really platform independent.  Get ISAAC64 and change the ISAAC calls to the appropriate ISAAC64 to build for x86-64.
+(NOTE: only builds for x86 (32 bit) because ISAAC only typedefs its values--it's not really platform independent.  Get ISAAC64 and change the ISAAC calls to the appropriate ISAAC64 to build for x86-64)
+
+mkdir bin
+cd bin
+cmake -GUnix\ Makefiles -DCMAKE_BUILD_TYPE=Release ..
+make
+./monty_hall_simulator
