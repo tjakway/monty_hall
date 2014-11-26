@@ -218,8 +218,8 @@ unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int n
 unsigned int get_other_door(unsigned int doors[], 
 						unsigned int firstdoor, unsigned int seconddoor)
 {
-	assert(firstdoor <= (NUM_DOORS-1));
-	assert(seconddoor <= (NUM_DOORS-1));
+	assert(firstdoor < NUM_DOORS);
+	assert(seconddoor < NUM_DOORS);
 	//the parameter doors is only used in debug builds for static
 	//assertion
 	assert(doors[0] != doors[1] != doors[2]);
