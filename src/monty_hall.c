@@ -54,8 +54,10 @@ randctx ctx;
 /*number of times to run the simulation*/
 #define DEFAULT_COUNT 2000000
 
-#define HELP_STR "Pass --count <number> to run the simulation <number>"\
-			   "first with the player switching choices, then without.\n"\
+#define COUNT_STR "Pass --count <number> to run the simulation <number> of times, "\
+			   "first with the player switching choices, then without.\n"
+
+#define HELP_STR COUNT_STR\
 			   "The paradox, quotingfrom http://en.wikipedia.org/wiki/Monty_Hall_problem#The_paradox:\n"\
 			   "Suppose you're on a game show, and you're given the choice"\
 			   " of three doors:"\
@@ -87,6 +89,7 @@ int main(int argc, char **argv)
 	//set defaults--will be overwritten by getopt if there are any args
 	opt.count = DEFAULT_COUNT;
 	
+	bool count_passed = FALSE;
 	int long_index = 0;
 	int c;
 	while((c = getopt_long(argc, argv, "hc:", long_options, &long_index)) != -1)
@@ -105,6 +108,10 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 	}
+	if(!count_passed)
+	{
+		printf("Running the simulator the default number of times (%u).  %s\n", DEFAULT_COUNT, COUNT_STR);
+	}
 	
 	
 	//initialize ISAAC
@@ -115,7 +122,7 @@ int main(int argc, char **argv)
 				 //the authors do this in their paper
 	
 	//run the simulation, first with switching doors and then without switching doors
-	printf("\n**********MONTY HALL SIMULATION RESULTS**********\n");
+	printf("**********MONTY HALL SIMULATION RESULTS**********");
 	run_simulation(opt.count, TRUE);
 	printf("\n*************************************************");
 	run_simulation(opt.count, FALSE);
