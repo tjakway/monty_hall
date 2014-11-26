@@ -101,10 +101,10 @@ int main(int argc, char **argv)
 			break;
 		case 'h':
 		case '?':
-			printf(HELP_STR);
+			printf("%s\n", HELP_STR);
 			exit(1);
 		default:
-			printf(HELP_STR);
+			printf("%s\n", HELP_STR);
 			exit(1);
 		}
 	}
