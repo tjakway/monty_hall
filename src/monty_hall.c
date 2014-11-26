@@ -97,6 +97,7 @@ int main(int argc, char **argv)
 		switch(c)
 		{
 		case 'c':
+			count_passed=TRUE;
 			opt.count = strtoul(optarg, NULL, 10);
 			break;
 		case 'h':
