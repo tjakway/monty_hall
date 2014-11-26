@@ -60,11 +60,11 @@ randctx ctx;
 /**
  * ************PROTOTYPES************
  */
-ub4 get_host_door(ub4 doors[], ub4 player_choice);
-ub4 rand_lim(ub4 limit);
-ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size);
-ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 seconddoor);
-
+unsigned int get_host_door(unsigned int doors[], unsigned int player_choice);
+unsigned int rand_lim(unsigned int limit);
+unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int not_size);
+unsigned int get_other_door(unsigned int doors[], unsigned int firstdoor, unsigned int seconddoor);
+void run_simulation(unsigned int count, bool switch_doors);
 
 /**
  * ************FUNCTIONS************
@@ -101,26 +101,35 @@ int main(int argc, char **argv)
 	isaac(&ctx); //run again just in case--
 				 //the authors do this in their paper
 	
+	//run the simulation, first with switching doors and then without switching doors
+	printf("\n**********MONTY HALL SIMULATION RESULTS**********\n");
+	run_simulation(opt.count, TRUE);
+	printf("\n*************************************************");
+	run_simulation(opt.count, FALSE);
 	
+}
+
+void run_simulation(unsigned int count, bool switch_doors)
+{
 	/*num_success = # of correct guesses (got the car)
 	 * num_failure = # of incorrect guesses (got the goat)*/
-	ub4 num_success=0, num_failure=0;
+	unsigned int num_success=0, num_failure=0;
 	
-	for(ub4 i = 0; i < COUNT; i++)
+	for(unsigned int i = 0; i < COUNT; i++)
 	{
 		//TRUE = has the car, FALSE = has the goat
 		
-		ub4 doors[] = {0, 0, 0};
+		unsigned int doors[] = {0, 0, 0};
 		
-		ub4 car_index = rand_lim(2); //pick a random door to put the car behind
+		unsigned int car_index = rand_lim(2); //pick a random door to put the car behind
 		doors[car_index] = TRUE; 
 		
 		//the player picks a random door
-		ub4 players_pick = rand_lim(NUM_DOORS-1); //NUM_DOORS - 1 because C counts up from 0
+		unsigned int players_pick = rand_lim(NUM_DOORS-1); //NUM_DOORS - 1 because C counts up from 0
 		
 		//get the host's pick
 		//it will be a door that isn't yours that reveals a goat
-		ub4 host_pick = get_host_door(doors, players_pick);
+		unsigned int host_pick = get_host_door(doors, players_pick);
 		
 		//do you switch to the one that isn't yours and the host hasn't revealed?
 		if(SWITCH)
@@ -140,7 +149,6 @@ int main(int argc, char **argv)
 		}
 	}
 	
-	printf("\n**********MONTY HALL SIMULATION RESULTS**********\n");
 	if(SWITCH)
 		printf("\nThe player chose TO switch.");
 	else
@@ -153,10 +161,10 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-ub4 get_host_door(ub4 doors[], ub4 player_choice)
+unsigned int get_host_door(unsigned int doors[], unsigned int player_choice)
 {
 	//generate a completely random door and assert it meets these conditions
-	ub4 host_pick = rand_lim(NUM_DOORS); //DOORS_LIMIT == 2 because C counts up from 0
+	unsigned int host_pick = rand_lim(NUM_DOORS); //DOORS_LIMIT == 2 because C counts up from 0
 	//recurse & try again if the generated number is the player choice or the car
 	//the host must open a door that isn't the player's and has a goat
 	if((host_pick == player_choice) || (doors[host_pick] == TRUE))
@@ -172,11 +180,11 @@ ub4 get_host_door(ub4 doors[], ub4 player_choice)
 /**
  * get a random number between 0 and limit inclusive that is not any of the values in not
  */
-ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
+unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int not_size)
 {
-	ub4 pick = rand_lim(limit);
+	unsigned int pick = rand_lim(limit);
 	
-	for(ub4 i = 0; i < not_size; i++)
+	for(unsigned int i = 0; i < not_size; i++)
 	{
 		//if this set isn't good, recurse until we get a matching one
 		if(pick == not[i])
@@ -186,15 +194,15 @@ ub4 get_rand_not(ub4 limit, ub4 not[], ub4 not_size)
 	return pick;
 }
 
-ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
+unsigned int get_other_door(unsigned int doors[], 
+						unsigned int firstdoor, unsigned int secondoor)
 {
 	assert(firstdoor <= DOORS_LIMIT);
 	assert(secondoor <= DOORS_LIMIT);
 	assert(doors[0] != doors[1] != doors[2]);
 
 	//loop over NUM_DOORS (which is 3) NOT (NUM_DOORS-1) or else we cut off the last run of the for loop!
-	ub4 i;
-	for(i = 0; i < NUM_DOORS; i++)
+	for(unsigned int i = 0; i < NUM_DOORS; i++)
 	{
 		//assert(firstdoor > -1); assert(firstdoor < 3);
 		//assert(secondoor > -1); assert(secondoor < 3);
@@ -214,7 +222,7 @@ ub4 get_other_door(ub4 doors[], ub4 firstdoor, ub4 secondoor)
  * see http://stackoverflow.com/questions/2999075/generate-a-random-number-within-range
  * generates a random number without skew
  */
-ub4 rand_lim(ub4 limit) 
+unsigned int rand_lim(unsigned int limit) 
 {
 	//UB4MAXVAL= RAND_MAX
 	double divisor = UB4MAXVAL/(limit+1);
