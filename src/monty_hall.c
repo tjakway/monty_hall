@@ -22,6 +22,8 @@
 /**
  * ************INCLUDES************
  */
+ 
+#define NDEBUG //uncomment to enable assertions
 #include <stdio.h>
 #include <assert.h>
 #include <stdint.h>
@@ -191,20 +193,23 @@ unsigned int get_rand_not(unsigned int limit, unsigned int not[], unsigned int n
 	return pick;
 }
 
+/**
+ * get the door in doors[] that isn't firstdoor or seconddoor
+ */
 unsigned int get_other_door(unsigned int doors[], 
-						unsigned int firstdoor, unsigned int secondoor)
+						unsigned int firstdoor, unsigned int seconddoor)
 {
 	assert(firstdoor <= DOORS_LIMIT);
-	assert(secondoor <= DOORS_LIMIT);
+	assert(seconddoor <= DOORS_LIMIT);
 	assert(doors[0] != doors[1] != doors[2]);
 
 	//loop over NUM_DOORS (which is 3) NOT (NUM_DOORS-1) or else we cut off the last run of the for loop!
 	for(unsigned int i = 0; i < NUM_DOORS; i++)
 	{
-		//assert(firstdoor > -1); assert(firstdoor < 3);
-		//assert(secondoor > -1); assert(secondoor < 3);
+		assert(firstdoor > -1); assert(firstdoor < 3);
+		assert(secondoor > -1); assert(secondoor < 3);
 		//test i not doors[i] because firstdoor and seconddoor are indices
-		if((i != firstdoor) && (i != secondoor))
+		if((i != firstdoor) && (i != seconddoor))
 		{
 			return i;
 		}
