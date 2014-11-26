@@ -20,6 +20,8 @@ cmake -GUnix\ Makefiles -DCMAKE_BUILD_TYPE=RELEASE ..
 make
 ./monty_hall_simulator
 
+Tested on Linux (Ubuntu 14.10) and Mac
+
 EXAMPLE OUTPUT:
 
 Running the simulator the default number of times (2000000).  Pass --count <number> to run the simulation <number> of times, first with the player switching doors, then without.
