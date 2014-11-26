@@ -36,7 +36,8 @@
  * ************GLOBALS************
  */
 static struct option long_options[] = {
-	{"count",	required_argument, 0, 'c' }
+	{"count",	required_argument, 0, 'c' },
+	{"help", 	no_argument, 	   0, 'h' }
 };
 
 struct{
@@ -55,7 +56,7 @@ randctx ctx;
 #define DEFAULT_COUNT 2000000
 
 #define HELP_STR "Pass --count <number> to run the simulation <number>"\
-			   "first with the player switching choices, then without."
+			   "first with the player switching choices, then without.\n"
 
 #define NUM_DOORS 3U
 
@@ -80,13 +81,14 @@ int main(int argc, char **argv)
 	
 	int long_index = 0;
 	int c;
-	while((c = getopt_long(argc, argv, "c:", long_options, &long_index)) != -1)
+	while((c = getopt_long(argc, argv, "hc:", long_options, &long_index)) != -1)
 	{
 		switch(c)
 		{
 		case 'c':
 			opt.count = strtoul(optarg, NULL, 10);
 			break;
+		case 'h':
 		case '?':
 			printf(HELP_STR);
 			exit(1);
